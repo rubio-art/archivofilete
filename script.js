@@ -73,6 +73,34 @@ if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();
 }
 
+// Cerrar modales al hacer click fuera
+window.onclick = function(event) {
+    if (event.target == modal) {
+        closeModal();
+    }
+    if (event.target == audioModal) {
+        closeAudioModal();
+    }
+}
+
+// Navegación con teclado
+document.addEventListener('keydown', function(event) {
+    if (modal.style.display === 'flex') {
+        if (event.key === 'ArrowLeft') {
+            changeImage(-1);
+        } else if (event.key === 'ArrowRight') {
+            changeImage(1);
+        } else if (event.key === 'Escape') {
+            closeModal();
+        }
+    }
+    if (audioModal && audioModal.style.display === 'flex') {
+        if (event.key === 'Escape') {
+            closeAudioModal();
+        }
+    }
+});
+
 // Generar la grilla de imágenes
 images.forEach((src, index) => {
     const item = document.createElement('div');
@@ -120,7 +148,167 @@ function updateModalImage() {
     }, 50);
 }
 
+const audioFiles = [
+    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 1)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 01.mp3" },
+    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 2)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 02.mp3" },
+    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 3)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 03.mp3" },
+    { title: "Roberto Del Villano entrevista a Carlos Carboni (Parte 1)", file: "entrevistas/Roberto Del Villano entrevista a Carlos Carboni 01.mp3" },
+    { title: "Roberto Del Villano entrevista a Carlos Carboni (Parte 2)", file: "entrevistas/Roberto Del Villano entrevista a Carlos Carboni 02.mp3" }
+];
+
+let currentAudioIndex = -1;
+const mainAudioPlayer = document.getElementById('main-audio-player');
+const currentTrackTitle = document.getElementById('current-track-title');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const audioListContainer = document.getElementById('audio-list');
+
+// Inicializar lista de reproducción
+if (audioListContainer) {
+    renderAudioList();
+}
+
+function renderAudioList() {
+    audioListContainer.innerHTML = '';
+    audioFiles.forEach((audio, index) => {
+        const item = document.createElement('div');
+        item.className = 'audio-list-item';
+        item.setAttribute('role', 'button');
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('data-index', index);
+        if (index === currentAudioIndex) item.classList.add('active');
+        
+        item.onclick = () => loadAndPlayAudio(index);
+        item.ontouchstart = () => loadAndPlayAudio(index);
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                loadAndPlayAudio(index);
+            }
+        });
+        
+        const title = document.createElement('h4');
+        title.textContent = audio.title;
+        
+        const icon = document.createElement('span');
+        icon.className = 'audio-status-icon';
+        icon.innerHTML = index === currentAudioIndex ? (mainAudioPlayer.paused ? '&#10074;&#10074;' : '&#9658;') : '&#9835;';
+        
+        item.appendChild(title);
+        item.appendChild(icon);
+        const progress = document.createElement('div');
+        progress.className = 'audio-progress';
+        const fill = document.createElement('div');
+        fill.className = 'progress-fill';
+        const percent = progressPercents[index] || 0;
+        fill.style.width = percent + '%';
+        progress.appendChild(fill);
+        item.appendChild(progress);
+        audioListContainer.appendChild(item);
+    });
+}
+
+const progressPercents = {};
+
+function loadAndPlayAudio(index) {
+    if (index < 0 || index >= audioFiles.length) return;
+    
+    currentAudioIndex = index;
+    const audio = audioFiles[index];
+    
+    // Si es el mismo audio y está pausado, reanudar
+    if (mainAudioPlayer.src.includes(encodeURI(audio.file)) && mainAudioPlayer.paused) {
+        mainAudioPlayer.play();
+    } else if (!mainAudioPlayer.src.includes(encodeURI(audio.file))) {
+        mainAudioPlayer.src = encodeURI(audio.file);
+        mainAudioPlayer.play();
+    }
+    
+    updatePlayerUI();
+}
+
+function updatePlayerUI() {
+    // Actualizar título
+    if (currentAudioIndex >= 0) {
+        currentTrackTitle.textContent = audioFiles[currentAudioIndex].title;
+    } else {
+        currentTrackTitle.textContent = "Seleccione un audio para comenzar";
+    }
+    
+    // Actualizar icono de play/pause
+    const playIcon = '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    const pauseIcon = '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+    
+    playPauseBtn.innerHTML = mainAudioPlayer.paused ? playIcon : pauseIcon;
+    
+    // Actualizar lista (clase active e iconos)
+    renderAudioList();
+}
+
+function togglePlayAudio() {
+    if (currentAudioIndex === -1) {
+        // Si no hay audio seleccionado, reproducir el primero
+        loadAndPlayAudio(0);
+        return;
+    }
+    
+    if (mainAudioPlayer.paused) {
+        mainAudioPlayer.play();
+    } else {
+        mainAudioPlayer.pause();
+    }
+    updatePlayerUI();
+}
+
+function stopAudio() {
+    mainAudioPlayer.pause();
+    mainAudioPlayer.currentTime = 0;
+    if (currentAudioIndex >= 0) {
+        progressPercents[currentAudioIndex] = 0;
+    }
+    updatePlayerUI();
+}
+
+function nextAudio() {
+    let nextIndex = currentAudioIndex + 1;
+    if (nextIndex >= audioFiles.length) nextIndex = 0; // Loop al principio
+    loadAndPlayAudio(nextIndex);
+}
+
+function prevAudio() {
+    let prevIndex = currentAudioIndex - 1;
+    if (prevIndex < 0) prevIndex = audioFiles.length - 1; // Loop al final
+    loadAndPlayAudio(prevIndex);
+}
+
+// Event listeners del reproductor
+if (mainAudioPlayer) {
+    mainAudioPlayer.addEventListener('play', updatePlayerUI);
+    mainAudioPlayer.addEventListener('pause', updatePlayerUI);
+    mainAudioPlayer.addEventListener('ended', () => {
+        nextAudio(); // Autoplay siguiente
+    });
+    mainAudioPlayer.addEventListener('timeupdate', () => {
+        if (currentAudioIndex >= 0 && mainAudioPlayer.duration) {
+            const percent = (mainAudioPlayer.currentTime / mainAudioPlayer.duration) * 100;
+            progressPercents[currentAudioIndex] = Math.min(100, Math.max(0, percent));
+            updateProgressBarDom();
+        }
+    });
+    mainAudioPlayer.addEventListener('loadedmetadata', () => {
+        updateProgressBarDom();
+    });
+}
+
+function updateProgressBarDom() {
+    if (!audioListContainer) return;
+    const activeFill = audioListContainer.querySelector('.audio-list-item[data-index="' + currentAudioIndex + '"] .progress-fill');
+    if (activeFill) {
+        const percent = progressPercents[currentAudioIndex] || 0;
+        activeFill.style.width = percent + '%';
+    }
+}
 const audioModal = document.getElementById('audioModal');
+const openAudioLink = document.getElementById('open-audio-link');
 
 function openAudioModal(event) {
     if (event) event.preventDefault();
@@ -134,63 +322,14 @@ function closeAudioModal() {
     if (audioModal) {
         audioModal.style.display = 'none';
         document.body.style.overflow = 'auto';
-        // Pausar audios al cerrar
-        const audios = document.querySelectorAll('audio');
-        audios.forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-        });
+        // Solo pausar, no resetear, para que el usuario pueda retomar si quiere
+        mainAudioPlayer.pause();
+        updatePlayerUI();
     }
 }
 
-// Cerrar modales al hacer click fuera
-window.onclick = function(event) {
-    if (event.target == modal) {
-        closeModal();
-    }
-    if (event.target == audioModal) {
-        closeAudioModal();
-    }
+if (openAudioLink) {
+    openAudioLink.addEventListener('click', openAudioModal);
+    openAudioLink.addEventListener('touchstart', openAudioModal);
 }
-
-// Navegación con teclado
-document.addEventListener('keydown', function(event) {
-    if (modal.style.display === 'flex') {
-        if (event.key === 'ArrowLeft') {
-            changeImage(-1);
-        } else if (event.key === 'ArrowRight') {
-            changeImage(1);
-        } else if (event.key === 'Escape') {
-            closeModal();
-        }
-    }
-});
-
-// Lista de archivos de audio
-const audioFiles = [
-    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 1)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 01.mp3" },
-    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 2)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 02.mp3" },
-    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 3)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 03.mp3" },
-    { title: "Roberto Del Villano entrevista a Carlos Carboni (Parte 1)", file: "entrevistas/Roberto Del Villano entrevista a Carlos Carboni 01.mp3" },
-    { title: "Roberto Del Villano entrevista a Carlos Carboni (Parte 2)", file: "entrevistas/Roberto Del Villano entrevista a Carlos Carboni 02.mp3" }
-];
-
-const audioGrid = document.getElementById('audio-grid');
-
-if (audioGrid) {
-    audioFiles.forEach(audio => {
-        const item = document.createElement('div');
-        item.className = 'audio-item';
-        
-        const title = document.createElement('h4');
-        title.textContent = audio.title;
-        
-        const audioPlayer = document.createElement('audio');
-        audioPlayer.controls = true;
-        audioPlayer.src = audio.file;
-        
-        item.appendChild(title);
-        item.appendChild(audioPlayer);
-        audioGrid.appendChild(item);
-    });
-}
+window.openAudioModal = openAudioModal;

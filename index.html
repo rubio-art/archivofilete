@@ -17,7 +17,7 @@
         <p class="subtitle">Tango, oficio y filete porteño</p>
       </div>
       <nav class="site-nav">
-        <a href="#sonoro" class="nav-link">Archivo Sonoro</a>
+        <a href="#" class="nav-link" id="open-audio-link" onclick="openAudioModal(event)">Archivo Sonoro</a>
       </nav>
     </header>
 
@@ -61,7 +61,30 @@
         <span class="close-audio" onclick="closeAudioModal()">&times;</span>
         <h3>Archivo Sonoro</h3>
         <p>Entrevistas y testimonios</p>
-        <div class="audio-grid" id="audio-grid">
+        
+        <div class="audio-player-wrapper">
+          <div class="current-track-display">
+            <h4 id="current-track-title">Seleccione un audio para comenzar</h4>
+            <audio id="main-audio-player" controls></audio>
+          </div>
+          
+          <div class="player-controls">
+            <button class="control-btn" onclick="prevAudio()" title="Anterior">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="control-btn main-play" onclick="togglePlayAudio()" id="play-pause-btn" title="Reproducir/Pausar">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="control-btn" onclick="stopAudio()" title="Detener">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>
+            </button>
+            <button class="control-btn" onclick="nextAudio()" title="Siguiente">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="audio-list" id="audio-list">
           <!-- El contenido se genera dinámicamente con JS -->
         </div>
       </div>
