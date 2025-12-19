@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nicolás Rubio — Sitio Oficial</title>
+    <meta name="description" content="Sitio oficial de Nicolás Rubio. Estética tanguera y galería Filete." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <h1 class="title">Archivo General del Filete</h1>
+        <p class="subtitle">Tango, oficio y filete porteño</p>
+      </div>
+      <nav class="site-nav">
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <p class="hero-text">En la década de 1970 Nicolás Rubió pudo fotografiar la época de oro del filete, donde los grandes paneles de camiones eran fileteados por maestros como Carlos Carboni o León Untroib, hoy verdaderas leyendas. También Rubió fotografió tablas y partes de carros que todavía se encontraban dispersas aquí y allá: en gallineros, en galpones, o simplemente a la intemperie de los baldíos pidiendo ser rescatadas. La tarea solitaria de Rubió, la cual era despreciada por otros artistas e intelectuales, dado que el filete porteño era tachado de “cosas de verduleros” desde la altanería de la academia, fue encomiable: para aquel entonces ya casi no había carros lecheros o panaderos en la ciudad, y poco tiempo después, por ley, fue prohibido el fileteado de colectivos. Es decir, Rubió llegó a tiempo, transformándose en el primer investigador del fileteado porteño. Por estas características, su archivo único, que relevó este arte, hoy Patrimonio de la Humanidad, dando cuenta de estilos, obras y fileteadores de los cuales no hay otro registro, es de sumo valor.</p>
+        </div>
+      </section>
+
+      <section class="gallery-preview" id="gallery-preview">
+        <h3>Muestra de Obra</h3>
+        <p>Hacé clic en una imagen para verla en detalle.</p>
+        
+        <!-- El contenido se genera dinámicamente con JS -->
+        <div class="mosaic-grid" id="mosaic-grid">
+        </div>
+      </section>
+
+      <section class="about">
+        <p style="text-align: center; font-size: 1.2em;">Próximamente Textos, Conferencias y Testimonios de Nicolás Rubió.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small>© <span id="year"></span> Nicolás Rubio — Buenos Aires</small>
+    </footer>
+
+    <!-- Estructura del Modal (Lightbox) -->
+    <div id="imageModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <span class="prev" onclick="changeImage(-1)">&#10094;</span>
+      <span class="next" onclick="changeImage(1)">&#10095;</span>
+      <img class="modal-content" id="modalImage">
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+  </html>

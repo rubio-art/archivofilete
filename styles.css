@@ -1,0 +1,240 @@
+/* Estilo general con estética tanguera y fileteado porteño */
+:root {
+  --negro-mate: #0d0a0a;
+  --vino-tango: #5a0f0f;
+  --rojo-tango: #8b0000;
+  --oro: #d4af37;
+  --verde-filete: #1b6f3a;
+  --azul-filete: #1f4f6d;
+  --marfil: #f3efe7;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: var(--marfil);
+  background: url('fondo.jpg') center/cover no-repeat fixed, #0d0a0a;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Bordes decorativos tipo fileteado */
+body::before, body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  border: 12px solid transparent;
+  border-image: linear-gradient(45deg, var(--rojo-tango), var(--oro), var(--verde-filete), var(--azul-filete)) 1;
+  opacity: 0.6;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 48px;
+  letter-spacing: 1px;
+  color: var(--oro);
+  text-shadow: 0 0 6px rgba(212, 175, 55, 0.25), 0 2px 0 #2b1a19;
+}
+.subtitle { margin: 2px 0 0; color: #e6ddc4; opacity: 0.85; }
+
+.site-nav .nav-link {
+  display: inline-block;
+  color: var(--marfil);
+  text-decoration: none;
+  padding: 10px 16px;
+  border: 1px solid rgba(212,175,55,0.6);
+  border-radius: 8px;
+  transition: all 160ms ease-in-out;
+}
+.site-nav .nav-link:hover {
+  color: var(--oro);
+  box-shadow: 0 0 18px rgba(212,175,55,0.35);
+  transform: translateY(-1px);
+}
+
+.hero {
+  margin: 10px 20px 0;
+  padding: 40px 24px;
+  border-radius: 16px;
+  background:
+    radial-gradient(300px 180px at 85% 10%, rgba(212,175,55,0.08), transparent 70%),
+    linear-gradient(180deg, rgba(13, 10, 10, 0.8) 0%, rgba(13, 10, 10, 0.6) 50%),
+    url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"300\"><defs><linearGradient id=\"g\" x1=\"0\" x2=\"1\"><stop offset=\"0\" stop-color=\"%23d4af37\"/><stop offset=\"1\" stop-color=\"%238b0000\"/></linearGradient></defs><g opacity=\"0.15\"><path d=\"M20,280 C140,280 120,40 260,40 C400,40 380,280 580,280\" stroke=\"url(%23g)\" stroke-width=\"8\" fill=\"none\"/></g></svg>') center/cover no-repeat;
+  border: 1px solid rgba(212,175,55,0.35);
+}
+.hero-title { font-size: 34px; margin: 0 0 8px; }
+.hero-text { max-width: 780px; opacity: 0.92; }
+
+.cta {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--negro-mate);
+  background: linear-gradient(180deg, var(--oro), #b7942e);
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 0 #8a6f22;
+  transition: transform 100ms ease-in-out, box-shadow 120ms ease-in-out;
+}
+.cta:hover { transform: translateY(-1px); box-shadow: 0 7px 0 #7a631c, 0 0 18px rgba(212,175,55,0.35); }
+
+.about {
+  margin: 28px 20px 40px;
+  padding: 24px;
+  border-left: 4px solid var(--rojo-tango);
+  background: rgba(13,10,10,0.4);
+}
+.about h3 { margin-top: 0; color: var(--oro); }
+
+.site-footer {
+  padding: 24px;
+}
+
+/* Galería en mosaico */
+.gallery-preview {
+  margin: 40px 20px;
+  text-align: center;
+}
+.gallery-preview h3 {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 36px;
+  color: var(--oro);
+  margin-bottom: 10px;
+}
+.gallery-preview p {
+  color: var(--marfil);
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+.mosaic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto 30px;
+}
+
+.mosaic-item {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 2px solid var(--rojo-tango);
+  aspect-ratio: 1 / 1;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  cursor: pointer;
+}
+
+.mosaic-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 400ms ease;
+}
+
+.mosaic-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(212,175,55,0.4);
+  z-index: 1;
+  border-color: var(--oro);
+}
+
+.mosaic-item:hover img {
+  transform: scale(1.1);
+}
+
+.gallery-cta {
+  margin-top: 30px;
+}
+
+/* Modal (Lightbox) Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 10, 10, 0.95);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  max-width: 90%;
+  max-height: 85vh;
+  border: 2px solid var(--oro);
+  box-shadow: 0 0 30px rgba(212,175,55,0.3);
+  object-fit: contain;
+}
+
+.close, .prev, .next {
+  color: var(--oro);
+  position: absolute;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  z-index: 2001;
+  background: rgba(0,0,0,0.5);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close {
+  top: 20px;
+  right: 20px;
+}
+
+.prev {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.next {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.close:hover, .prev:hover, .next:hover {
+  color: var(--marfil);
+  background: rgba(212,175,55,0.8);
+  box-shadow: 0 0 15px var(--oro);
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .mosaic-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .close, .prev, .next {
+    font-size: 28px;
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 480px) {
+  .mosaic-grid {
+    grid-template-columns: 1fr;
+  }
+}
