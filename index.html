@@ -7,7 +7,7 @@
     <meta name="description" content="Sitio oficial de Nicolás Rubio. Estética tanguera y galería Filete." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:wght@400;600;700&family=Sancreek&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -17,6 +17,7 @@
         <p class="subtitle">Tango, oficio y filete porteño</p>
       </div>
       <nav class="site-nav">
+        <a href="#sonoro" class="nav-link">Archivo Sonoro</a>
       </nav>
     </header>
 
@@ -42,6 +43,7 @@
     </main>
 
     <footer class="site-footer">
+      <img src="blanco.png" alt="Logo Archivo Filete" class="footer-logo">
       <small>© <span id="year"></span> Nicolás Rubio — Buenos Aires</small>
     </footer>
 
@@ -51,6 +53,18 @@
       <span class="prev" onclick="changeImage(-1)">&#10094;</span>
       <span class="next" onclick="changeImage(1)">&#10095;</span>
       <img class="modal-content" id="modalImage">
+    </div>
+
+    <!-- Estructura del Modal de Audio -->
+    <div id="audioModal" class="modal audio-modal-overlay">
+      <div class="audio-modal-content">
+        <span class="close-audio" onclick="closeAudioModal()">&times;</span>
+        <h3>Archivo Sonoro</h3>
+        <p>Entrevistas y testimonios</p>
+        <div class="audio-grid" id="audio-grid">
+          <!-- El contenido se genera dinámicamente con JS -->
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>

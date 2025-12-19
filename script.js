@@ -29,7 +29,37 @@ const images = [
     'img/img024.jpg',
     'img/img025.jpg',
     'img/img026.jpg',
-    'img/img027.jpg'
+    'img/img027.jpg',
+    'img/img028.jpg',
+    'img/img029.jpg',
+    'img/img030.jpg',
+    'img/img031.jpg',
+    'img/img032.jpg',
+    'img/img033.jpg',
+    'img/img034.jpg',
+    'img/img035.jpg',
+    'img/img036.jpg',
+    'img/img037.jpg',
+    'img/img038.jpg',
+    'img/img039.jpg',
+    'img/img040.jpg',
+    'img/img041.jpg',
+    'img/img042.jpg',
+    'img/img043.jpg',
+    'img/img044.jpg',
+    'img/img045.jpg',
+    'img/img046.jpg',
+    'img/img047.jpg',
+    'img/img048.jpg',
+    'img/img049.jpg',
+    'img/img050.jpg',
+    'img/img051.jpg',
+    'img/img052.jpg',
+    'img/img053.jpg',
+    'img/img054.jpg',
+    'img/img055.jpg',
+    'img/img056.jpg',
+    'img/img057.jpg'
 ];
 
 const grid = document.getElementById('mosaic-grid');
@@ -90,10 +120,36 @@ function updateModalImage() {
     }, 50);
 }
 
-// Cerrar modal al hacer click fuera de la imagen
+const audioModal = document.getElementById('audioModal');
+
+function openAudioModal(event) {
+    if (event) event.preventDefault();
+    if (audioModal) {
+        audioModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeAudioModal() {
+    if (audioModal) {
+        audioModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        // Pausar audios al cerrar
+        const audios = document.querySelectorAll('audio');
+        audios.forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+    }
+}
+
+// Cerrar modales al hacer click fuera
 window.onclick = function(event) {
     if (event.target == modal) {
         closeModal();
+    }
+    if (event.target == audioModal) {
+        closeAudioModal();
     }
 }
 
@@ -109,3 +165,32 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+
+// Lista de archivos de audio
+const audioFiles = [
+    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 1)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 01.mp3" },
+    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 2)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 02.mp3" },
+    { title: "Jorge Preloran entrevista a Carlos Carboni (Parte 3)", file: "entrevistas/Jorge Preloran entrevista a Carlos Carboni 03.mp3" },
+    { title: "Roberto Del Villano entrevista a Carlos Carboni (Parte 1)", file: "entrevistas/Roberto Del Villano entrevista a Carlos Carboni 01.mp3" },
+    { title: "Roberto Del Villano entrevista a Carlos Carboni (Parte 2)", file: "entrevistas/Roberto Del Villano entrevista a Carlos Carboni 02.mp3" }
+];
+
+const audioGrid = document.getElementById('audio-grid');
+
+if (audioGrid) {
+    audioFiles.forEach(audio => {
+        const item = document.createElement('div');
+        item.className = 'audio-item';
+        
+        const title = document.createElement('h4');
+        title.textContent = audio.title;
+        
+        const audioPlayer = document.createElement('audio');
+        audioPlayer.controls = true;
+        audioPlayer.src = audio.file;
+        
+        item.appendChild(title);
+        item.appendChild(audioPlayer);
+        audioGrid.appendChild(item);
+    });
+}
