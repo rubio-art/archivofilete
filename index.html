@@ -14,11 +14,46 @@
     <header class="site-header">
       <div class="brand">
         <h1 class="title">Archivo General del Filete</h1>
-        <p class="subtitle">Tango, oficio y filete porteño</p>
       </div>
-      <nav class="site-nav">
-        <a href="#" class="nav-link" id="open-audio-link" onclick="openAudioModal(event)">Archivo Sonoro</a>
-      </nav>
+
+
+      
+      <!-- Reproductor de Audio en Header (Arriba a la derecha) -->
+      <div class="header-audio-player">
+        <audio id="main-audio-player"></audio>
+        
+        <div class="player-main-row">
+          <div class="player-controls-mini">
+            <button class="mini-btn" onclick="prevAudio()" title="Anterior">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="mini-btn play-btn" onclick="togglePlayAudio()" id="play-pause-btn" title="Reproducir">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="mini-btn" onclick="nextAudio()" title="Siguiente">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+          </div>
+          
+          <div class="track-info-mini">
+            <div id="current-track-title" class="scrolling-text">Seleccione un audio</div>
+            <div class="mini-progress-container" id="mini-progress-container">
+              <div class="mini-progress-bar" id="mini-progress-bar"></div>
+            </div>
+          </div>
+          
+          <button class="playlist-toggle" onclick="togglePlaylist()" title="Ver lista de audios">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+          </button>
+        </div>
+
+        <!-- Lista desplegable -->
+        <div class="playlist-dropdown" id="playlist-dropdown">
+          <div class="audio-list" id="audio-list">
+            <!-- JS generará la lista aquí -->
+          </div>
+        </div>
+      </div>
     </header>
 
     <main>
@@ -29,7 +64,7 @@
       </section>
 
       <section class="gallery-preview" id="gallery-preview">
-        <h3>Muestra de Obra</h3>
+        
         <p>Hacé clic en una imagen para verla en detalle.</p>
         
         <!-- El contenido se genera dinámicamente con JS -->
@@ -44,7 +79,7 @@
 
     <footer class="site-footer">
       <img src="blanco.png" alt="Logo Archivo Filete" class="footer-logo">
-      <small>© <span id="year"></span> Nicolás Rubio — Buenos Aires</small>
+      <small>© Archivo General del Filete — Buenos Aires</small>
     </footer>
 
     <!-- Estructura del Modal (Lightbox) -->
@@ -55,41 +90,6 @@
       <img class="modal-content" id="modalImage">
     </div>
 
-    <!-- Estructura del Modal de Audio -->
-    <div id="audioModal" class="modal audio-modal-overlay">
-      <div class="audio-modal-content">
-        <span class="close-audio" onclick="closeAudioModal()">&times;</span>
-        <h3>Archivo Sonoro</h3>
-        <p>Entrevistas y testimonios</p>
-        
-        <div class="audio-player-wrapper">
-          <div class="current-track-display">
-            <h4 id="current-track-title">Seleccione un audio para comenzar</h4>
-            <audio id="main-audio-player" controls></audio>
-          </div>
-          
-          <div class="player-controls">
-            <button class="control-btn" onclick="prevAudio()" title="Anterior">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-            </button>
-            <button class="control-btn main-play" onclick="togglePlayAudio()" id="play-pause-btn" title="Reproducir/Pausar">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button class="control-btn" onclick="stopAudio()" title="Detener">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>
-            </button>
-            <button class="control-btn" onclick="nextAudio()" title="Siguiente">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="audio-list" id="audio-list">
-          <!-- El contenido se genera dinámicamente con JS -->
-        </div>
-      </div>
-    </div>
-
     <script src="script.js"></script>
   </body>
-  </html>
+</html>
